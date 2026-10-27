@@ -1,0 +1,23 @@
+{
+  "name": "telefoniasms",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "expo": "^58.0.19",
+    "expo-sms": "^58.0.2",
+    "expo-status-bar": "~58.0.4",
+    "react": "19.3.0",
+    "react-native": "0.88.0"
+  },
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "aula": "cross-env EXPO_PACKAGER_PROXY_URL=https://moneybags-science-clause.ngrok-free.dev expo start"
+  },
+  "private": true,
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
+}
