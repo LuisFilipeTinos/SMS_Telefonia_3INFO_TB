@@ -24,13 +24,71 @@ export default function App() {
 
   function numeroValido() {
     const limpo = limparNumero(numero);
-    if (limpo.length < 8) {
-      Alert.alert('Número inválido', 'Digite um número com pelo menos 8 dígitos.');
+    if (limpo.length < 9) {
+      Alert.alert('Número inválido', 'Digite um número com pelo menos 9 dígitos.');
       return false;
     }
     return true;
   }
 
+
+  function registrar(acao) {
+    const hora = new Date().toLocaleTimeString('pt-BR',
+      {
+        hour: '2-digit',
+        minute: '2-digit'
+      }
+    );
+    setHistorico([`${hora} - ${acao} para ${numero}`, ...historico]);
+  }
+
+  async function ligar() {
+
+    if (numeroValido()) {
+      try {
+        const url = `tel:${limparNumero(numero)}`;
+
+        const podeAbrir = await Linking.canOpenURL(url);
+
+        if (podeAbrir) {
+          await Linking.openURL(url);
+          registrar("Ligação");
+        }
+        else {
+          Alert.alert("Aviso", "Este aparelho não consegue fazer ligações.");
+        }
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível abrir o discador.");
+      }
+    }
+  }
+
+  async function enviarSMS() {
+    if (numeroValido()) {
+      if (mensagem.trim() === "") {
+        Alert.alert(
+          "Mensagem vazia", 
+          "Escreva alguma coisa antes de enviar."
+        );
+        return;
+      }
+
+      const disponivel = await SMS.isAvailableAsync();
+      if (!disponivel) {
+        Alert.alert("Aviso", "Este aparelho não consegue fazer envio de SMS.");
+        return;
+      }
+
+      try {
+        const { result } = await SMS.sendSMSAsync(
+          [limparNumero(numero)],
+          mensagem
+        );
+      } catch (error) {
+        
+      }
+    }
+  }
 
   return (
     <View>
